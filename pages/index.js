@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import {cars} from "/lib/cars"
+// import {cars} from "/lib/cars"
 
-export default function Home() {
+export default function Home({cars}) {
  const [sideNav,setSideNav] = useState({active: false});
   return (
     <div className="font-Maven w-full h-screen bg-slate-200 overflow-y-hidden">
@@ -33,7 +33,7 @@ export default function Home() {
         <div className=" hidden md:block border-b-[1px] border-r-[1px] mt-1 border-gray-300 - space-x-3 px-4 w-2/12 tracking-tight">
           <div className="flex  flex-row items-center justify-between">
 
-          <div className="font-black  text-red-600 bg-red-600/30 text-xs px-7 mx-1 py-2 rounded">Sell a car</div>
+          <Link href="/sell"  className="font-black  text-red-600 bg-red-600/30 text-xs px-7 mx-1 py-2 rounded">Sell a car</Link>
           <button className="by-50  rounded-sm p-1"><img className=" w-8 h-8" src="data:image/svg+xml;base64,PHN2ZyBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMjEgMTcuNzVjMC0uNDE0LS4zMzYtLjc1LS43NS0uNzVoLTE2LjVjLS40MTQgMC0uNzUuMzM2LS43NS43NXMuMzM2Ljc1Ljc1Ljc1aDE2LjVjLjQxNCAwIC43NS0uMzM2Ljc1LS43NXptMC00YzAtLjQxNC0uMzM2LS43NS0uNzUtLjc1aC0xNi41Yy0uNDE0IDAtLjc1LjMzNi0uNzUuNzVzLjMzNi43NS43NS43NWgxNi41Yy40MTQgMCAuNzUtLjMzNi43NS0uNzV6bTAtNGMwLS40MTQtLjMzNi0uNzUtLjc1LS43NWgtMTYuNWMtLjQxNCAwLS43NS4zMzYtLjc1Ljc1cy4zMzYuNzUuNzUuNzVoMTYuNWMuNDE0IDAgLjc1LS4zMzYuNzUtLjc1em0wLTRjMC0uNDE0LS4zMzYtLjc1LS43NS0uNzVoLTE2LjVjLS40MTQgMC0uNzUuMzM2LS43NS43NXMuMzM2Ljc1Ljc1Ljc1aDE2LjVjLjQxNCAwIC43NS0uMzM2Ljc1LS43NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvc3ZnPg==" /></button>
           </div>
         </div>
@@ -110,7 +110,7 @@ function List({data,sm}){
   
   return(
     <div className="w-full p-4 ">
-      {data 
+      {data.length >0 
       ?<div className={sm ? "w-full grid gap-4 overflow-y-auto grid-cols-1" :"w-full grid gap-4 overflow-y-auto grid-cols-3"}>
         {data.map((i,index)=>(
         <div key={index} className="bg-gray-100 rounded p-5">
@@ -142,4 +142,18 @@ function List({data,sm}){
       : <div className="text-xs  p-3">No cars</div> }
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  let res = await fetch("http://localhost:3000/api/cars", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  let cars = await res.json();
+
+  return {
+    props: { cars },
+  };
 }
