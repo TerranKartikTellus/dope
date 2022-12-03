@@ -1,7 +1,5 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
+module.exports = {
+  images: {
+    domains: ['en.wikipedia.org','upload.wikimedia.org'],
+  },
 }
-
-module.exports = nextConfig
