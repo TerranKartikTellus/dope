@@ -137,7 +137,7 @@ function List({data,sm}){
           </div>
           <div className="flex flex-row items-center justify-between">
             <div className="text-lg font-black">$ {i.cost}</div>
-            <button className="bg-red-500/90 px-5 rounded py-1 text-gray-100">More details</button>
+            <button className="bg-red-500/90 px-5 hover:-hue-rotate-60 rounded py-1 text-gray-100">More details</button>
           </div>
       </div> 
       ))}
