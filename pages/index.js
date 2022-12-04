@@ -82,7 +82,10 @@ export default function Home({cars}) {
         </div>
         
       </div>
-      <div className="bg-600 w-full pt-[50px] overflow-y-auto h-screen "><List sm={false} data={cars}></List></div>
+      <div className="bg-600 w-full pt-[50px] overflow-y-auto h-screen ">
+        {cars && <List sm={false} data={cars}></List>}
+        {!cars && <div>Loading</div>}
+      </div>
       </div>
       </div>
     </div>
@@ -145,7 +148,7 @@ function List({data,sm}){
 }
 
 export async function getServerSideProps(context) {
-  let res = await fetch("http://localhost:3000/api/cars", {
+  let res = await fetch("/api/cars", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
