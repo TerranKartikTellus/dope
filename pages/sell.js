@@ -4,7 +4,7 @@ export default function Sell(){
   // setLoading(true);
   e.preventDefault();
   console.log('sent1');
-  let res = await fetch("/api/addCar", {
+  let res = await fetch(`https://cars-orcin.vercel.app`+"/api/addCar", {
     method: "POST",
     body: JSON.stringify(
       {
