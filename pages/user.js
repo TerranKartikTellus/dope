@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function User(){
+  const [savedLocally,setsavedLocally] = useState(false);
   const [user,setuser] = useState({});
   const [contact,setContact] = useState([]);
   const [validate,setvalidate] = useState(false);
@@ -27,7 +28,7 @@ export default function User(){
     name:"",
     contact: []
     });
-
+    setsavedLocally(true);
     console.log(list);
     document.getElementById('name').value = null;
  }
@@ -37,9 +38,12 @@ export default function User(){
  }
  
  const submitFormToDB = async(e) =>{
+  
   e.preventDefault();
-   let res = await fetch(`https://cars-orcin.vercel.app`+"/api/addContact", {
-    method: "POST",
+  //  let res = await fetch(`https://cars-orcin.vercel.app`+"/api/addContact", {
+   let res = await fetch(`http://localhost:3000`+"/api/addContact", {
+
+   method: "POST",
     body: JSON.stringify(
       {data: list}
     ),
@@ -60,8 +64,8 @@ export default function User(){
       <div className="h-full bg-lime-500 w-1/2 flex flex-col items-center justify-center space-y-3">
         <div className="text-3xl border-t-[1px] border-black pt-14 mb-44">User End</div>
         <div className="flex flex-row items-center justify-center w-full space-x-2">
-        <input id="name" required  className="capitalize w-4/12 text-center outline-none bordb-2 border-black bg-transparent placeholder-black/70 text-xl bg-gray-50 rounded " onChange={onChangeName} placeholder="Username"></input>
-        <input id="pass" required  className="capitalize w-4/12 text-center outline-none bordb-2 border-black bg-transparent placeholder-black/70 text-xl bg-gray-50 rounded " onChange={onChangePass} placeholder="Password"></input>
+        <input id="name"  className="capitalize w-4/12 text-center outline-none bordb-2 border-black bg-transparent placeholder-black/70 text-xl bg-gray-50 rounded " onChange={onChangeName} placeholder="Username"></input>
+        <input id="pass"  className="capitalize w-4/12 text-center outline-none bordb-2 border-black bg-transparent placeholder-black/70 text-xl bg-gray-50 rounded " onChange={onChangePass} placeholder="Password"></input>
         </div>
         <div className="w-[400px] bg-gray text-black text-xs text-right "></div>  
           <div className={validate ? "w-4/12 flex flex-row items-center justify-around":"w-4/12 flex flex-col items-center justify-around"}>
@@ -70,8 +74,8 @@ export default function User(){
           </div>
         <div className="w-full pt-44 flex flex-row items-center justify-center ">
 
-        <button className="w-4/12 hover:invert hover:font-semibold text-sm tracking-wider " onClick={submitForm}>Update Data Locally</button>
-        <button className="w-4/12 hover:invert hover:font-semibold text-sm tracking-wider bg-gray-50 p-1 " onClick={submitFormToDB}>MongoDB Save</button>
+        { !savedLocally && <button className="w-4/12 hover:invert hover:font-semibold text-sm tracking-wider " onClick={submitForm}>Update Data Locally</button>}
+        { savedLocally && <button className="w-4/12 hover:invert hover:font-semibold text-sm tracking-wider bg-gray-50 p-1 " onClick={submitFormToDB}>MongoDB Save</button>}
         </div>
         <div className="border-b-[1px] border-black pb-1 w-[80px] text-transparent">.</div>
       </div>
