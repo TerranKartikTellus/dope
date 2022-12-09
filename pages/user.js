@@ -41,7 +41,7 @@ export default function User(){
   
   e.preventDefault();
   //  let res = await fetch(`https://cars-orcin.vercel.app`+"/api/addContact", {
-   let res = await fetch(`http://localhost:3000`+"/api/addContact", {
+   let res = await fetch(`https://cars-orcin.vercel.app`+"/api/addContact", {
 
    method: "POST",
     body: JSON.stringify(

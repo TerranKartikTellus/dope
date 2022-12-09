@@ -35,7 +35,7 @@ export default function Login({contacts}){
 export async function getServerSideProps(context) {
   
   // let res = await fetch(`https://cars-orcin.vercel.app`+"/api/cars", {
-  let res = await fetch(`http://localhost:3000`+"/api/contacts", {
+  let res = await fetch(`https://cars-orcin.vercel.app`+"/api/contacts", {
   method: "GET",
     headers: {
       "Content-Type": "application/json",
