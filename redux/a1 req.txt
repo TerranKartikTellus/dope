@@ -1,0 +1,20 @@
+a1    req     
+a2    matrix
+            
+b1    soft configuration management    
+b2      
+            
+c1          
+c2    .net    
+            
+d1           
+d2         
+            
+e1         
+e2    hci      
+       
+f1    testing     
+f2         
+           
+g1    data mining      
+g2          

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function User(){
+  const [loading,setloading] = useState("MongoDB Save")
   const [savedLocally,setsavedLocally] = useState(false);
   const [user,setuser] = useState({});
   const [contact,setContact] = useState([]);
@@ -13,7 +14,7 @@ export default function User(){
   });
   const [list,setList] = useState([]);
   const onSubminContact = (e) =>{
-    setInfo({...info,contact: [...info.contact,contact]})
+    setInfo({...info,contact: [...info.contact,contact] , 'createdAtDate': getDateCreated})
     setContact(0);setvalidate(false);
     document.getElementById('number').value = null;
   }
@@ -36,16 +37,32 @@ export default function User(){
     setuser({...user,pass: e.target.value})
     setInfo({...info, pass:e.target.value})
  }
+ function getDateCreated(){
+  var date = new Date();
+
+  // Get year, month, and day part from the date
+  var year = date.toLocaleString("default", { year: "numeric" });
+  var month = date.toLocaleString("default", { month: "2-digit" });
+  var day = date.toLocaleString("default", { day: "2-digit" });
+
+  // Generate yyyy-mm-dd date string
+  var formattedDate = year + "-" + month + "-" + day;
+  return formattedDate;  // Prints: 2022-05-04
+ }
  
  const submitFormToDB = async(e) =>{
-  
+  setloading("Loading")
   e.preventDefault();
   //  let res = await fetch(`https://cars-orcin.vercel.app`+"/api/addContact", {
-   let res = await fetch(`https://cars-orcin.vercel.app`+"/api/addContact", {
+   let res = await fetch(`http://localhost:3000/`+"/api/addContact", {
 
    method: "POST",
     body: JSON.stringify(
-      {data: list}
+      {
+        'data': list,
+        'createdat' : new Date()
+        
+      }
     ),
   });
   
@@ -53,7 +70,7 @@ export default function User(){
   console.log('add res:',res);
   if(res.msg=="Insertion Completed"){
     document.location.href="/";
-  }
+  }else   setloading("Error Occured")
  } 
  return(
     <div className=" w-full h-screen flex flex-row items-center justify-center font-Maven">
@@ -75,7 +92,7 @@ export default function User(){
         <div className="w-full pt-44 flex flex-row items-center justify-center ">
 
         { !savedLocally && <button className="w-4/12 hover:invert hover:font-semibold text-sm tracking-wider " onClick={submitForm}>Update Data Locally</button>}
-        { savedLocally && <button className="w-4/12 hover:invert hover:font-semibold text-sm tracking-wider bg-gray-50 p-1 " onClick={submitFormToDB}>MongoDB Save</button>}
+        { savedLocally && <button className="w-4/12 hover:invert hover:font-semibold text-sm tracking-wider bg-gray-50 p-1 " onClick={submitFormToDB}>{loading}</button>}
         </div>
         <div className="border-b-[1px] border-black pb-1 w-[80px] text-transparent">.</div>
       </div>
