@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-export default function User(){
+export default function User({count}){
   const [loading,setloading] = useState("MongoDB Save")
   const [savedLocally,setsavedLocally] = useState(false);
   const [user,setuser] = useState({});
@@ -86,7 +86,7 @@ export default function User(){
         </div>
         <div className="w-[400px] bg-gray text-black text-xs text-right "></div>  
           <div className={validate ? "w-4/12 flex flex-row items-center justify-around":"w-4/12 flex flex-col items-center justify-around"}>
-            <input id="number"   onChange={(e)=>{setContact([e.target.value,10000+info.contact.length+1]); if(e.target.value.length==10){setvalidate(true);}else{setvalidate(false)}  } } minLength={10} maxLength={10} min={9100000000} max={9999999999}  className="w-full text-center outline-none borde-2 text-base border-black bg-transparent placeholder-black/70 bg-gray-50 rounded py-1 m-1"  placeholder="Phone Number"></input>
+            <input id="number"   onChange={(e)=>{setContact([e.target.value,10000+count+info.contact.length+1]); if(e.target.value.length==10){setvalidate(true);}else{setvalidate(false)}  } } minLength={10} maxLength={10} min={9100000000} max={9999999999}  className="w-full text-center outline-none borde-2 text-base border-black bg-transparent placeholder-black/70 bg-gray-50 rounded py-1 m-1"  placeholder="Phone Number"></input>
             {validate ? <button onClick={onSubminContact} className="hover:opacity-75 bg-gray-50 "><svg className="w-5 h-5" clipRule="evenodd" fill-rule="evenodd" strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 11h-7.25c-.414 0-.75.336-.75.75s.336.75.75.75h7.25v7.25c0 .414.336.75.75.75s.75-.336.75-.75v-7.25h7.25c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-7.25v-7.25c0-.414-.336-.75-.75-.75s-.75.336-.75.75z" fillRule="nonzero"/></svg></button> : <div className="w-[400px] bg-gray text-black text-xs text-right ">**10 digit number expected</div>}
           </div>
         <div className="w-full pt-44 flex flex-row items-center justify-center ">
@@ -112,4 +112,24 @@ export default function User(){
       </form>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  
+  // let res = await fetch(`https://cars-orcin.vercel.app`+"/api/cars", {
+  let res = await fetch(`https://cars-orcin.vercel.app`+"/api/contacts", {
+  method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  let contacts = await res.json();
+  let count = 0;
+  contacts.map(i=>{
+    count+=i.data[0].contact.length
+  })
+  // console.log(count);
+  return {
+    props: { count },
+  };
 }
